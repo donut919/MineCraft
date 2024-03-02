@@ -1,0 +1,24 @@
+
+public class FlightItem extends Item {
+    
+    public FlightItem(Settings settings) {
+        super(settings);
+    }
+    
+    @Override
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        if (!world.isClient) {
+            // Toggle flight mode for the player
+            if (player.getAbilities().allowFlying) {
+                player.getAbilities().allowFlying = false;
+                player.getAbilities().flying = false;
+                player.sendAbilitiesUpdate();
+            } else {
+                player.getAbilities().allowFlying = true;
+                player.getAbilities().flying = true;
+                player.sendAbilitiesUpdate();
+            }
+        }
+        return TypedActionResult.success(player.getStackInHand(hand));
+    }
+}
